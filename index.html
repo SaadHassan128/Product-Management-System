@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management System</title>
+    <link rel="shortcut icon" href="image.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <h1>Product Management System</h1>
+        <nav>
+            <ul>
+                <li><a href="#addSection">Add Product</a></li>
+                <li><a href="#productsTable">Product List</a></li>
+                <li><a href="#searchSection">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Add Product Form -->
+        <section id="addSection" class="form-section">
+            <form id="addProductForm">
+                <h2>Add New Product</h2>
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" placeholder="Enter product name" required>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Product Price</label>
+                    <input type="number" id="productPrice" step="0.01" placeholder="Enter product price" required>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Product Category</label>
+                    <input type="text" id="productCategory" placeholder="Enter product category" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Product Description</label>
+                    <textarea id="productDescription" placeholder="Enter product description" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Add Product</button>
+            </form>
+        </section>
+
+        <!-- Search Section -->
+<section id="searchSection" class="search-section">
+    <h2>Search Products</h2>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by product name">
+        <button id="searchButton" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+    </div>
+</section>
+
+
+        <!-- Products Table -->
+        <section class="table-section">
+            <div id="productsSection">
+                <h2>Product List</h2>
+                <table id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productsTableBody">
+                        <!-- Rows will be dynamically generated -->
+                    </tbody>
+                </table>
+                <button id="clearAllButton">Clear All Products</button>
+            </div>            
+        </section>
+
+        <!-- Update Product Form -->
+        <section id="updateSection" class="form-section" style="display: none;">
+            <form id="updateProductForm">
+                <h2>Update Product</h2>
+                <input type="hidden" id="updateIndex">
+                <div class="form-group">
+                    <label for="updateName">Product Name</label>
+                    <input type="text" id="updateName" required>
+                </div>
+                <div class="form-group">
+                    <label for="updatePrice">Product Price</label>
+                    <input type="number" id="updatePrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="updateCategory">Product Category</label>
+                    <input type="text" id="updateCategory" required>
+                </div>
+                <div class="form-group">
+                    <label for="updateDescription">Product Description</label>
+                    <textarea id="updateDescription" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Save Changes</button>
+                <button type="button" id="cancelUpdate" class="btn-secondary">Cancel</button>
+            </form>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
