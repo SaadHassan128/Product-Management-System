@@ -136,6 +136,10 @@ document.getElementById('searchButton').addEventListener('click', function () {
     );
     renderTable(filteredProducts);
 });
+document.getElementById('clearSearchButton').addEventListener('click', function () {
+    document.getElementById('searchInput').value = '';
+    renderTable();
+});
 
 // Clear All Products Button
 document.getElementById('clearAllButton').addEventListener('click', function () {
