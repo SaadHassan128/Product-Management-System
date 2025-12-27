@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"d:\\\\My-Projects\\\\Crud System\" log --oneline)",
+      "Bash(git -C \"d:\\\\My-Projects\\\\Crud System\" status)",
+      "Bash(git -C \"d:\\\\My-Projects\\\\Crud System\" add .)"
+    ]
+  }
+}

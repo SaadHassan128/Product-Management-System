@@ -3,110 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Management System</title>
-    <link rel="shortcut icon" href="icon.jpg" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>Product Management System - Advanced CRUD Application</title>
+    <meta name="description" content="Professional product management system with CRUD operations, dark mode, export functionality, and real-time search. Manage your inventory efficiently.">
+    <meta name="keywords" content="product management, CRUD, inventory, JavaScript, dark mode, CSV export">
+    <meta name="author" content="Product Management System">
+    <link rel="canonical" href="https://yourwebsite.com/">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Product Management System - Advanced CRUD Application">
+    <meta property="og:description" content="Professional product management system with CRUD operations, dark mode, export functionality, and real-time search.">
+    <meta property="og:url" content="https://yourwebsite.com/">
+    <meta property="og:site_name" content="Product Management System">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Product Management System">
+    <meta name="twitter:description" content="Professional product management system with CRUD operations, dark mode, and export functionality.">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Product Manager">
+
+    <!-- Security -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self';">
+
+    <!-- Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
+    <!-- Favicon - Using icon.jpg temporarily -->
+    <link rel="icon" type="image/jpeg" href="icon.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="icon.jpg">
+    <link rel="apple-touch-icon" href="icon.jpg">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Product Management System",
+      "description": "Professional product management system with CRUD operations, dark mode, and export functionality",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "CRUD Operations",
+        "Dark Mode",
+        "CSV/JSON Export",
+        "Real-time Search",
+        "Pagination",
+        "Sorting",
+        "Bulk Actions"
+      ]
+    }
+    </script>
 </head>
 <body>
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" class="skip-nav" aria-label="Skip to main content">Skip to main content</a>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
     <!-- Navigation Bar -->
-    <header class="navbar">
-        <h1>Product Management System</h1>
-        <nav>
-            <ul>
-                <li><a href="#addSection">Add Product</a></li>
-                <li><a href="#productsTable">Product List</a></li>
-                <li><a href="#searchSection">Search</a></li>
-            </ul>
-        </nav>
+    <header class="navbar" role="banner">
+        <div class="navbar-container">
+            <h1>
+                <i class="fas fa-box-open"></i> Product Manager
+            </h1>
+            <nav role="navigation" aria-label="Main navigation">
+                <ul id="navMenu" class="nav-menu">
+                    <li><a href="#addSection" aria-label="Navigate to Add Product section"><i class="fas fa-plus"></i> Add Product</a></li>
+                    <li><a href="#productsTable" aria-label="Navigate to Product List section"><i class="fas fa-list"></i> Product List</a></li>
+                    <li><a href="#searchSection" aria-label="Navigate to Search section"><i class="fas fa-search"></i> Search</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
     </header>
 
-    <div class="container">
+    <main id="main-content" class="container">
+        <!-- Statistics Dashboard -->
+        <section class="stats-section animate-on-scroll" aria-labelledby="stats-heading">
+            <h2 id="stats-heading" class="visually-hidden">Product Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-boxes"></i>
+                    <div class="stat-content">
+                        <h3>Total Products</h3>
+                        <p class="stat-number" id="totalProducts">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <div class="stat-content">
+                        <h3>Average Price</h3>
+                        <p class="stat-number" id="avgPrice">$0.00</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tags"></i>
+                    <div class="stat-content">
+                        <h3>Categories</h3>
+                        <p class="stat-number" id="totalCategories">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="stat-content">
+                        <h3>Total Value</h3>
+                        <p class="stat-number" id="totalValue">$0.00</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Add Product Form -->
-        <section id="addSection" class="form-section">
-            <form id="addProductForm">
-                <h2>Add New Product</h2>
-                <div class="form-group">
-                    <label for="productName">Product Name</label>
-                    <input type="text" id="productName" placeholder="Enter product name" required>
+        <section id="addSection" class="form-section animate-on-scroll" aria-labelledby="add-heading">
+            <form id="addProductForm" novalidate>
+                <h2 id="add-heading">
+                    <i class="fas fa-plus-circle"></i> Add New Product
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="productName">Product Name <span class="required">*</span></label>
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="Enter product name"
+                            required
+                            aria-required="true"
+                            aria-describedby="productName-error"
+                            autocomplete="off">
+                        <span class="error-message" id="productName-error" role="alert"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Product Price <span class="required">*</span></label>
+                        <input
+                            type="number"
+                            id="productPrice"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00"
+                            required
+                            aria-required="true"
+                            aria-describedby="productPrice-error"
+                            autocomplete="off">
+                        <span class="error-message" id="productPrice-error" role="alert"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Product Category <span class="required">*</span></label>
+                        <input
+                            type="text"
+                            id="productCategory"
+                            placeholder="Enter product category"
+                            required
+                            aria-required="true"
+                            aria-describedby="productCategory-error"
+                            autocomplete="off">
+                        <span class="error-message" id="productCategory-error" role="alert"></span>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="productDescription">Product Description <span class="required">*</span></label>
+                        <textarea
+                            id="productDescription"
+                            placeholder="Enter product description"
+                            rows="3"
+                            required
+                            aria-required="true"
+                            aria-describedby="productDescription-error"
+                            autocomplete="off"></textarea>
+                        <span class="error-message" id="productDescription-error" role="alert"></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="productPrice">Product Price</label>
-                    <input type="number" id="productPrice" step="0.01" placeholder="Enter product price" required>
-                </div>
-                <div class="form-group">
-                    <label for="productCategory">Product Category</label>
-                    <input type="text" id="productCategory" placeholder="Enter product category" required>
-                </div>
-                <div class="form-group">
-                    <label for="productDescription">Product Description</label>
-                    <textarea id="productDescription" placeholder="Enter product description" required></textarea>
-                </div>
-                <button type="submit" class="btn-primary">Add Product</button>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
             </form>
         </section>
 
         <!-- Search Section -->
-<section id="searchSection" class="search-section">
-    <h2>Search Products</h2>
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search by product name">
-        <button id="searchButton" class="btn-primary"><i class="fas fa-search"></i> Search</button>
-        <button id="clearSearchButton" class="btn-secondary">Clear</button>
-    </div>
-</section>
+        <section id="searchSection" class="search-section animate-on-scroll" aria-labelledby="search-heading">
+            <h2 id="search-heading">
+                <i class="fas fa-search"></i> Search Products
+            </h2>
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search by product name..."
+                        aria-label="Search products by name"
+                        autocomplete="off">
+                    <button id="clearSearchButton" class="clear-search-btn" aria-label="Clear search" title="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
 
+        <!-- Export & Bulk Actions -->
+        <section class="actions-section animate-on-scroll" aria-labelledby="actions-heading">
+            <h2 id="actions-heading" class="visually-hidden">Product Actions</h2>
+            <div class="actions-toolbar">
+                <div class="bulk-actions">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="selectAll" aria-label="Select all products">
+                        <span>Select All</span>
+                    </label>
+                    <button id="deleteSelectedButton" class="btn-danger" disabled aria-label="Delete selected products">
+                        <i class="fas fa-trash"></i> Delete Selected (<span id="selectedCount">0</span>)
+                    </button>
+                </div>
+                <div class="export-actions">
+                    <button id="exportCSV" class="btn-secondary" aria-label="Export products to CSV">
+                        <i class="fas fa-file-csv"></i> Export CSV
+                    </button>
+                    <button id="exportJSON" class="btn-secondary" aria-label="Export products to JSON">
+                        <i class="fas fa-file-code"></i> Export JSON
+                    </button>
+                </div>
+            </div>
+        </section>
 
         <!-- Products Table -->
-        <section class="table-section">
+        <section class="table-section animate-on-scroll" aria-labelledby="table-heading">
             <div id="productsSection">
-                <h2>Product List</h2>
-                <table id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productsTableBody">
-                        <!-- Rows will be dynamically generated -->
-                    </tbody>
-                </table>
-                <button id="clearAllButton">Clear All Products</button>
-            </div>            
+                <div class="table-header">
+                    <h2 id="table-heading">
+                        <i class="fas fa-table"></i> Product List
+                    </h2>
+                    <div class="table-controls">
+                        <label for="itemsPerPage" class="visually-hidden">Items per page</label>
+                        <select id="itemsPerPage" aria-label="Select items per page">
+                            <option value="5">5 per page</option>
+                            <option value="10" selected>10 per page</option>
+                            <option value="25">25 per page</option>
+                            <option value="50">50 per page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Products Yet</h3>
+                    <p>Start by adding your first product using the form above.</p>
+                </div>
+
+                <!-- Table Wrapper for Responsive Scroll -->
+                <div class="table-wrapper">
+                    <table id="productsTable" aria-label="Products table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <input type="checkbox" id="selectAllTable" aria-label="Select all products in table" style="display: none;">
+                                </th>
+                                <th scope="col">#</th>
+                                <th scope="col" class="sortable" data-sort="name" tabindex="0" role="button" aria-label="Sort by name">
+                                    Name <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col" class="sortable" data-sort="price" tabindex="0" role="button" aria-label="Sort by price">
+                                    Price <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col" class="sortable" data-sort="category" tabindex="0" role="button" aria-label="Sort by category">
+                                    Category <i class="fas fa-sort"></i>
+                                </th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Skeleton Loading -->
+                            <tr class="skeleton-row">
+                                <td><div class="skeleton skeleton-checkbox"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-buttons"></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination" role="navigation" aria-label="Pagination">
+                    <button id="prevPage" class="page-btn" aria-label="Previous page" disabled>
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                    <div class="page-numbers" id="pageNumbers" role="list"></div>
+                    <button id="nextPage" class="page-btn" aria-label="Next page" disabled>
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <button id="clearAllButton" class="btn-danger-outline" aria-label="Clear all products">
+                    <i class="fas fa-trash-alt"></i> Clear All Products
+                </button>
+            </div>
         </section>
 
         <!-- Update Product Form -->
-        <section id="updateSection" class="form-section" style="display: none;">
-            <form id="updateProductForm">
-                <h2>Update Product</h2>
-                <input type="hidden" id="updateIndex">
-                <div class="form-group">
-                    <label for="updateName">Product Name</label>
-                    <input type="text" id="updateName" required>
-                </div>
-                <div class="form-group">
-                    <label for="updatePrice">Product Price</label>
-                    <input type="number" id="updatePrice" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label for="updateCategory">Product Category</label>
-                    <input type="text" id="updateCategory" required>
-                </div>
-                <div class="form-group">
-                    <label for="updateDescription">Product Description</label>
-                    <textarea id="updateDescription" required></textarea>
-                </div>
-                <button type="submit" class="btn-primary">Save Changes</button>
-                <button type="button" id="cancelUpdate" class="btn-secondary">Cancel</button>
-            </form>
+        <section id="updateSection" class="form-section modal-overlay" style="display: none;" role="dialog" aria-labelledby="update-heading" aria-modal="true">
+            <div class="modal-content">
+                <button type="button" class="modal-close" id="modalClose" aria-label="Close update form">
+                    <i class="fas fa-times"></i>
+                </button>
+                <form id="updateProductForm" novalidate>
+                    <h2 id="update-heading">
+                        <i class="fas fa-edit"></i> Update Product
+                    </h2>
+                    <input type="hidden" id="updateIndex">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="updateName">Product Name <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="updateName"
+                                required
+                                aria-required="true"
+                                aria-describedby="updateName-error"
+                                autocomplete="off">
+                            <span class="error-message" id="updateName-error" role="alert"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="updatePrice">Product Price <span class="required">*</span></label>
+                            <input
+                                type="number"
+                                id="updatePrice"
+                                step="0.01"
+                                min="0"
+                                required
+                                aria-required="true"
+                                aria-describedby="updatePrice-error"
+                                autocomplete="off">
+                            <span class="error-message" id="updatePrice-error" role="alert"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateCategory">Product Category <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="updateCategory"
+                                required
+                                aria-required="true"
+                                aria-describedby="updateCategory-error"
+                                autocomplete="off">
+                            <span class="error-message" id="updateCategory-error" role="alert"></span>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="updateDescription">Product Description <span class="required">*</span></label>
+                            <textarea
+                                id="updateDescription"
+                                rows="3"
+                                required
+                                aria-required="true"
+                                aria-describedby="updateDescription-error"
+                                autocomplete="off"></textarea>
+                            <span class="error-message" id="updateDescription-error" role="alert"></span>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" id="cancelUpdate" class="btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
         </section>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirm-modal" role="alertdialog" aria-labelledby="confirm-title" aria-describedby="confirm-message" aria-modal="true" style="display: none;">
+        <div class="confirm-content">
+            <div class="confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="confirm-title">Confirm Action</h3>
+            <p id="confirm-message">Are you sure you want to proceed?</p>
+            <div class="confirm-actions">
+                <button id="confirmYes" class="btn-danger">
+                    <i class="fas fa-check"></i> Yes, Continue
+                </button>
+                <button id="confirmNo" class="btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- ARIA Live Region for Screen Reader Announcements -->
+    <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" id="ariaAnnouncements"></div>
+
+    <script src="script.js" type="module"></script>
 </body>
 </html>

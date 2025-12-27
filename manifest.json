@@ -1,0 +1,22 @@
+{
+  "name": "Product Management System",
+  "short_name": "Product Manager",
+  "description": "Professional product management system with CRUD operations, dark mode, export functionality, and real-time search",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#007bff",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "icons": [
+    {
+      "src": "icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
